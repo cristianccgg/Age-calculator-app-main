@@ -18,29 +18,23 @@ const calculateDifferences = () => {
   const month = parseInt(monthInput.value);
   const year = parseInt(yearInput.value);
 
-  if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-    let yearDiff = currentYear - year;
-    let monthDiff = currentMonth - month;
-    let dayDiff = currentDay - day;
+  let yearDiff = currentYear - year;
+  let monthDiff = currentMonth - month;
+  let dayDiff = currentDay - day;
 
-    if (dayDiff < 0) {
-      monthDiff--;
-      dayDiff += new Date(currentYear, currentMonth - 1, 0).getDate();
-    }
-
-    if (monthDiff < 0) {
-      yearDiff--;
-      monthDiff += 12;
-    }
-
-    yearResult.innerText = yearDiff;
-    monthResult.innerText = monthDiff;
-    dayResult.innerText = dayDiff;
-  } else {
-    yearResult.innerText = "--";
-    monthResult.innerText = "--";
-    dayResult.innerText = "--";
+  if (dayDiff < 0) {
+    monthDiff--;
+    dayDiff += new Date(currentYear, currentMonth - 1, 0).getDate();
   }
+
+  if (monthDiff < 0) {
+    yearDiff--;
+    monthDiff += 12;
+  }
+
+  yearResult.innerText = yearDiff >= 0 ? yearDiff : "--";
+  monthResult.innerText = monthDiff >= 0 ? monthDiff : "--";
+  dayResult.innerText = dayDiff >= 0 ? dayDiff : "--";
 };
 
 const validateInputs = () => {
@@ -55,28 +49,26 @@ const validateInputs = () => {
   const isMonthValid = !isNaN(month) && month >= 1 && month <= 12;
   const isYearValid = !isNaN(year) && year <= currentYear;
 
-  dayError.classList.toggle("active", !isDayValid);
-  monthError.classList.toggle("active", !isMonthValid);
-  yearError.classList.toggle("active", !isYearValid);
+  dayError.classList.toggle("active", isDayValid);
+  monthError.classList.toggle("active", isMonthValid);
+  yearError.classList.toggle("active", isYearValid);
 
-  if (isDayValid) {
-    dayError.classList.remove("active");
-  }
-  if (isMonthValid) {
-    monthError.classList.remove("active");
-  }
-  if (isYearValid) {
-    yearError.classList.remove("active");
-  }
+  return isDayValid && isMonthValid && isYearValid;
 };
 
 const ageCalc = () => {
-  validateInputs();
-  calculateDifferences();
+  if (validateInputs()) {
+    calculateDifferences();
+  } else {
+    yearResult.innerText = "--";
+    monthResult.innerText = "--";
+    dayResult.innerText = "--";
+  }
 };
 
 dayInput.addEventListener("input", ageCalc);
 monthInput.addEventListener("input", ageCalc);
 yearInput.addEventListener("input", ageCalc);
 
+validateInputs();
 ageCalc();
