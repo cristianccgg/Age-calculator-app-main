@@ -126,6 +126,8 @@ span {
     border-radius: 20px 20px 30% 20px;
     width: 50vw;
     height: fit-content;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   .data-container {
