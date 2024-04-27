@@ -7,6 +7,7 @@ const dayResult = document.getElementById("day-result");
 const dayError = document.getElementById("day-error");
 const monthError = document.getElementById("month-error");
 const yearError = document.getElementById("year-error");
+const btn = document.getElementById("btn");
 
 const calculateDifferences = () => {
   const currentDate = new Date();
@@ -53,11 +54,11 @@ const validateInputs = () => {
   monthError.classList.toggle("active", isMonthValid);
   yearError.classList.toggle("active", isYearValid);
 
-  return isDayValid && isMonthValid && isYearValid;
+  ageCalc(isDayValid, isMonthValid, isYearValid);
 };
 
-const ageCalc = () => {
-  if (validateInputs()) {
+const ageCalc = (dayValid, monthValid, yearValid) => {
+  if (dayValid && monthValid && yearValid) {
     calculateDifferences();
   } else {
     yearResult.innerText = "--";
@@ -66,9 +67,7 @@ const ageCalc = () => {
   }
 };
 
-dayInput.addEventListener("input", ageCalc);
-monthInput.addEventListener("input", ageCalc);
-yearInput.addEventListener("input", ageCalc);
-
-validateInputs();
+btn.addEventListener("click", () => {
+  validateInputs();
+});
 ageCalc();
